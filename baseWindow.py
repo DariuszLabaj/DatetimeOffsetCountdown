@@ -62,7 +62,7 @@ class BaseWindow(ABC):
 
     def __init__(self, width: int = 800, height: int = 600, caption: Optional[str] = None, fps: Optional[int] = None, flags: int = pygame.SRCALPHA):
         self._running = False
-        self._flags = pygame.DOUBLEBUF | flags
+        self._flags = pygame.DOUBLEBUF | pygame.HWSURFACE | flags
         self._width = width
         self._height = height
         self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)

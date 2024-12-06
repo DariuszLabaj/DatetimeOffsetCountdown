@@ -69,6 +69,7 @@ class BaseWindow(ABC):
         self._displaySurface = pygame.Surface(self._backgroundSurface.get_rect().size, pygame.SRCALPHA)
         self._fps = fps if fps is not None else 60
         self._FramePerSec = pygame.time.Clock()
+        self.Debug = False
         pygame.font.init()
         if caption:
             pygame.display.set_caption(caption)

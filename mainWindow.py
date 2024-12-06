@@ -32,8 +32,10 @@ class MainWindow(BaseWindow):
             self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)
         self.UpdateLogic()
 
+    def SetDebug(self):
+        self.Debug = True
+
     def Setup(self):
-        self.DEBUG = True
         self.fireworks = []
         self.StartCelebration = 2
         self.EndCelebration = 58
@@ -54,17 +56,18 @@ class MainWindow(BaseWindow):
         self.UpdateLogic()
 
     def __setCountdownPoint(self):
-        if not self.DEBUG:
+        if not self.Debug:
             return
         hours = self.listOfTimeZones[self.timeZoneIndex]
         self.__timezoneOffset.setCountdownPoint(
-            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=1, seconds=10))
+            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=0, seconds=30))
         self.timeZoneIndex += 1
 
     def UpdateLogic(self):
         match self.__mode:
             case ProgramMode.PreCountDown:
-                self.__BgImage = pygame.image.load("Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
+                self.__BgImage = pygame.image.load(
+                    "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
                 self.setFont(fontSize=120)
                 self.countDownText.setFont(self._font, generate=False)
                 self.countDownText.setAlignment("midtop", generate=False)
@@ -74,12 +77,16 @@ class MainWindow(BaseWindow):
                 self.timezoneText.setAlignment("midbottom", generate=False)
                 self.timezoneText.setPosition(self.Width//2, self.Height//2+20, generate=False)
             case ProgramMode.CountDown:
+                self.__BgImage = pygame.image.load(
+                    "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
+                self.setFont(fontSize=120)
+                self.timezoneText.setFont(self._font, generate=False)
+                self.timezoneText.setAlignment("midbottom", generate=False)
+                self.timezoneText.setPosition(self.Width//2, self.Height//4)
                 self.setFont(fontSize=240)
                 self.countDownText.setFont(self._font, generate=False)
                 self.countDownText.setAlignment("center", generate=False)
                 self.countDownText.setPosition(self.Width//2, self.Height//2, generate=False)
-
-                self.timezoneText.setPosition(self.Width//2, self.Height//4)
             case ProgramMode.PostCountDown:
                 self.setFont(fontSize=80)
                 self.countDownText.setFont(self._font, generate=False)
@@ -113,12 +120,12 @@ class MainWindow(BaseWindow):
                 else:
                     self.timezoneText.updateText(timezone)
                 if hours:
-                    self.countDownText.updateText(f"{hours+1}h")
+                    self.countDownText.updateText(f"{hours+1} hours")
                     if self.__mode != ProgramMode.TimeZoneDisplay:
                         self.__mode = ProgramMode.TimeZoneDisplay
                         self.UpdateLogic()
                 elif minutes:
-                    self.countDownText.updateText(f"{minutes+1}m")
+                    self.countDownText.updateText(f"{minutes+1} minutes")
                     if minutes < self.StartCelebration and self.__mode == ProgramMode.TimeZoneDisplay:
                         self.__mode = ProgramMode.PreCountDown
                         self.UpdateLogic()

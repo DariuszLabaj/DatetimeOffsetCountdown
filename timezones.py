@@ -27,9 +27,9 @@ class TimeZones(IntEnum):
     Mountain_USA = -7
     Pacific_USA = -8
     Alaska = -9
-    Honolulu = -10
-    Midway = -11
-    Baker_Island = -12
+    Honolulu = -10  #
+    Midway = -11  #
+    Baker_Island = -12  #
 
 
 class TimezoneOffset:

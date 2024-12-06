@@ -137,7 +137,6 @@ class ParticleText:
                 not text_mask.get_at((x, y + 1))    # Below
             )
         ]
-        target_positions = [target_positions[i] for i in range(len(target_positions)) if i % 5 != 4]
         for i, particle in enumerate(self.__particles):
             if i < len(target_positions):
                 particle.scatter(self.__font.get_height())

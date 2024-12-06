@@ -33,6 +33,7 @@ class MainWindow(BaseWindow):
         self.UpdateLogic()
 
     def Setup(self):
+        self.DEBUG = True
         self.fireworks = []
         self.StartCelebration = 2
         self.EndCelebration = 58
@@ -53,6 +54,8 @@ class MainWindow(BaseWindow):
         self.UpdateLogic()
 
     def __setCountdownPoint(self):
+        if not self.DEBUG:
+            return
         hours = self.listOfTimeZones[self.timeZoneIndex]
         self.__timezoneOffset.setCountdownPoint(
             datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=1, seconds=10))

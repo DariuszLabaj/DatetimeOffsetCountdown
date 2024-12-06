@@ -64,7 +64,7 @@ class MainWindow(BaseWindow):
     def UpdateLogic(self):
         match self.__mode:
             case ProgramMode.PreCountDown:
-                self.__BgImage = pygame.image.load("Resources\\"+self.timezoneText.Text.replace(' ', '_')+".png")
+                self.__BgImage = pygame.image.load("Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
                 self.setFont(fontSize=120)
                 self.countDownText.setFont(self._font, generate=False)
                 self.countDownText.setAlignment("midtop", generate=False)
@@ -90,7 +90,7 @@ class MainWindow(BaseWindow):
                 self.timezoneText.setAlignment("topleft", generate=False)
                 self.timezoneText.setPosition(20, 20, generate=False)
             case _:
-                self.__BgImage = pygame.image.load("Resources\\timezoneBg.jpg")
+                self.__BgImage = pygame.image.load("Resources/timezoneBg.jpg").convert_alpha()
                 self.setFont(fontSize=80)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("topleft", generate=False)

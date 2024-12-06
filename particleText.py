@@ -26,8 +26,8 @@ class ParticleText:
             self.__target_y = y
 
         def update(self):
-            self.__x = ParticleText.Particle.lerp(self.__x, self.__target_x, 0.2)
-            self.__y = ParticleText.Particle.lerp(self.__y, self.__target_y, 0.2)
+            self.__x = ParticleText.Particle.lerp(self.__x, self.__target_x, 0.4)
+            self.__y = ParticleText.Particle.lerp(self.__y, self.__target_y, 0.4)
 
         def scatter(self, radius: float):
             randomAngle = random.uniform(0, math.pi * 2)

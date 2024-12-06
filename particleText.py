@@ -1,7 +1,6 @@
 import math
 import random
 from typing import Literal, Optional
-import numpy as np
 import pygame
 
 
@@ -90,7 +89,7 @@ class ParticleText:
         return self.__particles
 
     def generate_particles(self):
-        text_surface = self.__font.render(self.__text, True, (255, 255, 255))
+        text_surface = self.__font.render(self.__text, False, (255, 255, 255))
         match self.__align:
             case "top":
                 text_rect = text_surface.get_rect(top=(self.__x, self.__y))
@@ -125,67 +124,28 @@ class ParticleText:
             case _:
                 text_rect = text_surface.get_rect()
 
-        # Create a mask and extract the mask as a NumPy array
         text_mask = pygame.mask.from_surface(text_surface)
-        mask_array = np.array([[bool(text_mask.get_at((x, y))) for x in range(text_rect.width)]
-                              for y in range(text_rect.height)], dtype=bool)
-
-        # Identify edge pixels
-        edges = np.zeros_like(mask_array, dtype=bool)
-
-        edges[1:-1, 1:-1] = (
-            (mask_array[1:-1, 1:-1] & np.logical_not(mask_array[:-2, 1:-1])) |  # Top neighbor
-            (mask_array[1:-1, 1:-1] & np.logical_not(mask_array[2:, 1:-1])) |   # Bottom neighbor
-            (mask_array[1:-1, 1:-1] & np.logical_not(mask_array[1:-1, :-2])) |  # Left neighbor
-            (mask_array[1:-1, 1:-1] & np.logical_not(mask_array[1:-1, 2:]))     # Right neighbor
-        )
-        edge_positions = np.argwhere(edges)
-        target_positions = [(text_rect.left + x, text_rect.top + y) for y, x in edge_positions]
-
-        # Update particles
-        num_positions = len(target_positions)
-        num_particles = len(self.__particles)
-
-        for i in range(min(num_positions, num_particles)):
-            self.__particles[i].scatter(self.__font.get_height())
-            self.__particles[i].setTarget(*target_positions[i])
-
-        # Trim excess particles if fewer targets
-        self.__particles = self.__particles[:num_positions]
-        for i in range(num_particles, num_positions):
+        target_positions = [
+            (text_rect.left + x, text_rect.top + y)
+            for y in range(text_rect.height)
+            for x in range(text_rect.width)
+            if text_mask.get_at((x, y)) and (
+                x == 0 or y == 0 or x == text_rect.width - 1 or y == text_rect.height - 1 or
+                not text_mask.get_at((x - 1, y)) or  # Left
+                not text_mask.get_at((x + 1, y)) or  # Right
+                not text_mask.get_at((x, y - 1)) or  # Above
+                not text_mask.get_at((x, y + 1))    # Below
+            )
+        ]
+        target_positions = [target_positions[i] for i in range(len(target_positions)) if i % 5 != 4]
+        for i, particle in enumerate(self.__particles):
+            if i < len(target_positions):
+                particle.scatter(self.__font.get_height())
+                particle.setTarget(*target_positions[i])
+            else:
+                # Remove extra particles
+                self.__particles = self.__particles[:len(target_positions)]
+                break
+        for i in range(len(self.__particles), len(target_positions)):
             target_x, target_y = target_positions[i]
             self.__particles.append(ParticleText.Particle(target_x, target_y, self.__width, self.__height))
-
-        # text_mask = pygame.mask.from_surface(text_surface)
-        # target_positions: list[tuple[int, int]] = []
-        # # Iterate through each pixel of the text mask
-        # for y in range(text_rect.height):
-        #     for x in range(text_rect.width):
-        #         if text_mask.get_at((x, y)):
-        #             # Check neighbors to see if this pixel is on the edge
-        #             if (x-1 < 0 or y-1 < 0 or x+1 >= text_rect.width or y+1 >= text_rect.height):
-        #                 target_x = text_rect.left + x
-        #                 target_y = text_rect.top + y
-        #                 target_positions.append((target_x, target_y))
-        #                 continue
-        #             if (
-        #                 not text_mask.get_at((x - 1, y)) or  # Left
-        #                 not text_mask.get_at((x + 1, y)) or  # Right
-        #                 not text_mask.get_at((x, y - 1)) or  # Above
-        #                 not text_mask.get_at((x, y + 1))     # Below
-        #             ):
-        #                 # Add to target positions if it's an edge pixel
-        #                 target_x = text_rect.left + x
-        #                 target_y = text_rect.top + y
-        #                 target_positions.append((target_x, target_y))
-        # for i, particle in enumerate(self.__particles):
-        #     if i < len(target_positions):
-        #         particle.scatter(self.__font.get_height())
-        #         particle.setTarget(*target_positions[i])
-        #     else:
-        #         # Remove extra particles
-        #         self.__particles = self.__particles[:len(target_positions)]
-        #         break
-        # for i in range(len(self.__particles), len(target_positions)):
-        #     target_x, target_y = target_positions[i]
-        #     self.__particles.append(ParticleText.Particle(target_x, target_y, self.__width, self.__height))

@@ -42,7 +42,8 @@ class TimezoneOffset:
             if local_timezone is None:
                 self.__timezone = TimeZones.Baker_Island
             else:
-                offset_hours = local_timezone.utcoffset(datetime.datetime.now()).seconds // 3600
+                offsetTime = local_timezone.utcoffset(datetime.datetime.now())
+                offset_hours = offsetTime.seconds // 3600 if offsetTime is not None else 0
                 self.__timezone = TimeZones(offset_hours)
         self.__ctdPtn = datetime.datetime(year=datetime.datetime.now().year+1, month=1, day=1)
         self.__timezonesOffsets = {x.name.replace('_', ' '): datetime.timedelta(

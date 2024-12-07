@@ -81,7 +81,7 @@ class MainWindow(BaseWindow):
                 file = "Resources/"+self.currentTimezone+".png"
                 if os.path.exists(file):
                     self.__BgImage = pygame.image.load(file).convert_alpha()
-                self.setFont(fontSize=120)
+                self.setFont(fontSize=110)
                 self.countDownText.setFont(self._font, generate=False)
                 self.countDownText.setAlignment("midtop", generate=False)
                 self.countDownText.setPosition(self.Width//2, self.Height//2+20, generate=False)
@@ -93,7 +93,7 @@ class MainWindow(BaseWindow):
                 file = "Resources/"+self.currentTimezone+".png"
                 if os.path.exists(file):
                     self.__BgImage = pygame.image.load(file).convert_alpha()
-                self.setFont(fontSize=120)
+                self.setFont(fontSize=110)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("midbottom", generate=False)
                 self.timezoneText.setPosition(self.Width//2, self.Height//4)

@@ -1,7 +1,7 @@
+from src import MainWindow
 import os
 from py_resource_manager import ResourceManager
 ResourceManager(os.path.dirname(os.path.abspath(__file__)) + "/Resources/Strings")
-from src import MainWindow
 # from timezones import TimeZones
 
 

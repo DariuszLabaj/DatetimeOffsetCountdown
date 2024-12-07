@@ -34,8 +34,11 @@ class MainWindow(BaseWindow):
             self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)
         self.UpdateLogic()
 
-    def SetDebug(self):
-        self.Debug = True
+    def SetDebug(self, single: bool = False):
+        if single:
+            self.__setCountdownPoint()
+        else:
+            self.Debug = True
 
     def SetTimezoneOffset(self, timezone: TimeZones):
         self.__timezoneOffset = TimezoneOffset(timezone)
@@ -64,7 +67,7 @@ class MainWindow(BaseWindow):
             return
         hours = self.listOfTimeZones[self.timeZoneIndex]
         self.__timezoneOffset.setCountdownPoint(
-            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=0, seconds=30))
+            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=2, seconds=10))
         self.timeZoneIndex += 1
 
     def UpdateLogic(self):
@@ -158,7 +161,7 @@ class MainWindow(BaseWindow):
         self.Logic()
         self.BackgroundSurface.blit(self.__BgToDisplay, (0, 0))
         if self.__mode == ProgramMode.PostCountDown:
-            self.DisplaySurface.fill((0, 0, 0, 128))
+            self.DisplaySurface.fill((0, 0, 0, 64))
             if random.random() < 0.2:
                 self.fireworks.append(Firework(self.Width, self.Height, self.gravity))
         else:

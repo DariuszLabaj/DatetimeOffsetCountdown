@@ -46,7 +46,7 @@ class MainWindow(BaseWindow):
         self.background((0, 0, 0))
         self.__isFullScreen = False
         # Timezone countdown setup
-        self.__timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
+        # self.__timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
         self.listOfTimeZones = [x.value - TimeZones.Central_Europe for x in TimeZones]
         self.timeZoneIndex = 0
         self.__setCountdownPoint()

@@ -1,9 +1,9 @@
-from src import MainWindow
 import os
 from py_resource_manager import ResourceManager
 ResourceManager(os.path.dirname(os.path.abspath(__file__)) + "/Resources/Strings")
 # from timezones import TimeZones
 
+from src import MainWindow
 
 if __name__ == "__main__":
     mainViewModel = MainWindow(1024, 768)

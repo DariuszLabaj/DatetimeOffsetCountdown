@@ -13,6 +13,7 @@ ColorValue = pygame.Color | tuple[int, int, int] | tuple[int, int, int, int] | s
 class MainWindow(BaseWindow):
     fireworks: list[Firework]
     gravity = pygame.Vector2(0, 0.2)
+    __timezoneOffset = TimezoneOffset()
 
     @property
     def Now(self):
@@ -35,6 +36,9 @@ class MainWindow(BaseWindow):
     def SetDebug(self):
         self.Debug = True
 
+    def SetTimezoneOffset(self, timezone: TimeZones):
+        self.__timezoneOffset = TimezoneOffset(timezone)
+
     def Setup(self):
         self.fireworks = []
         self.StartCelebration = 2
@@ -42,7 +46,7 @@ class MainWindow(BaseWindow):
         self.background((0, 0, 0))
         self.__isFullScreen = False
         # Timezone countdown setup
-        self.__timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
+        # self.__timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
         self.listOfTimeZones = [x.value - TimeZones.Central_Europe for x in TimeZones]
         self.timeZoneIndex = 0
         self.__setCountdownPoint()

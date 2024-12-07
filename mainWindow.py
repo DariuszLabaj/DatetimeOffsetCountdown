@@ -149,11 +149,12 @@ class MainWindow(BaseWindow):
     def Draw(self):
         self.Logic()
         self.BackgroundSurface.blit(self.__BgToDisplay, (0, 0))
-        self.DisplaySurface.fill((0, 0, 0, 0))
         if self.__mode == ProgramMode.PostCountDown:
+            self.DisplaySurface.fill((0, 0, 0, 128))
             if random.random() < 0.2:
                 self.fireworks.append(Firework(self.Width, self.Height, self.gravity))
         else:
+            self.DisplaySurface.fill((0, 0, 0, 0))
             self.countDownText.update()
             self.DrawParticles(self.countDownText.Particles)
             self.timezoneText.update()

@@ -3,6 +3,10 @@
 /__pycache__
 run.sh
 Resources/__pycache__
+<<<<<<< HEAD
 src/__pycache__
 Resources/__pycache__/Strings_class.cpython-312.pyc
 src/__pycache__/mainWindow.cpython-312.pyc
+=======
+src/__pycache__
+>>>>>>> c06029d00346660519915c9c9f4e673b52829725

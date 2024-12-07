@@ -1,5 +1,6 @@
 import datetime
 from enum import IntEnum
+from typing import Optional
 
 
 class TimeZones(IntEnum):
@@ -33,8 +34,13 @@ class TimeZones(IntEnum):
 
 
 class TimezoneOffset:
-    def __init__(self, timezone: TimeZones):
-        self.__timezone = timezone
+    def __init__(self, timezone: Optional[TimeZones] = None):
+        if timezone:
+            self.__timezone = timezone
+        else:
+            local_timezone = datetime.datetime.now().astimezone().tzinfo  # Get the system timezone
+            offset_hours = local_timezone.utcoffset(datetime.datetime.now()).seconds // 3600
+            self.__timezone = TimeZones(offset_hours)
         self.__ctdPtn = datetime.datetime(year=datetime.datetime.now().year+1, month=1, day=1)
         self.__timezonesOffsets = {x.name.replace('_', ' '): datetime.timedelta(
             hours=x-self.__timezone) for x in list(TimeZones)}

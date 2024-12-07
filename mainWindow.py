@@ -13,7 +13,7 @@ ColorValue = pygame.Color | tuple[int, int, int] | tuple[int, int, int, int] | s
 class MainWindow(BaseWindow):
     fireworks: list[Firework]
     gravity = pygame.Vector2(0, 0.2)
-    __timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
+    __timezoneOffset = TimezoneOffset()
 
     @property
     def Now(self):

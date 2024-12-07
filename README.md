@@ -57,9 +57,9 @@ This project is a Python-based interactive application to celebrate New Year's E
 
 ## Screenshots
 
-![hourWait](image.png)
-![countdown](image-1.png)
-![celebration](image-2.png)
+![hourWait](readmeResources/image.png)
+![countdown](readmeResources/image-1.png)
+![celebration](readmeResources/image-2.png)
 
 > **Note: Some images included in the application are AI-generated using ChatGPT and DALL-E.**
 

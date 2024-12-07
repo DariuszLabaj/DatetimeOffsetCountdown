@@ -1,0 +1,95 @@
+<root>
+  <data name="NextTimezone" xml:space="preserve">
+    <value>Nächste: {}</value>
+  </data>
+  <data name="HappyNewYear" xml:space="preserve">
+    <value>Frohes Neues Jahr!</value>
+  </data>
+  <data name="HoursLeft" xml:space="preserve">
+    <value>{} Stunden</value>
+  </data>
+  <data name="MinutesLeft" xml:space="preserve">
+    <value>{} Minuten</value>
+  </data>
+  <data name="ChristmasIsland" xml:space="preserve">
+    <value>Weihnachtsinsel</value>
+  </data>
+  <data name="NewZealand" xml:space="preserve">
+    <value>Neuseeland</value>
+  </data>
+  <data name="Fiji" xml:space="preserve">
+    <value>Fidschi</value>
+  </data>
+  <data name="Sydney" xml:space="preserve">
+    <value>Sydney</value>
+  </data>
+  <data name="Queensland" xml:space="preserve">
+    <value>Queensland</value>
+  </data>
+  <data name="Japan" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="China" xml:space="preserve">
+    <value>China</value>
+  </data>
+  <data name="Indonesia" xml:space="preserve">
+    <value>Indonesien</value>
+  </data>
+  <data name="Bangladesh" xml:space="preserve">
+    <value>Bangladesch</value>
+  </data>
+  <data name="Pakistan" xml:space="preserve">
+    <value>Pakistan</value>
+  </data>
+  <data name="Azerbaijan" xml:space="preserve">
+    <value>Aserbaidschan</value>
+  </data>
+  <data name="Russia" xml:space="preserve">
+    <value>Russland</value>
+  </data>
+  <data name="Greece" xml:space="preserve">
+    <value>Griechenland</value>
+  </data>
+  <data name="CentralEurope" xml:space="preserve">
+    <value>Mitteleuropa</value>
+  </data>
+  <data name="UnitedKingdom" xml:space="preserve">
+    <value>Vereinigtes Königreich</value>
+  </data>
+  <data name="Azores" xml:space="preserve">
+    <value>Azoren</value>
+  </data>
+  <data name="Greenland" xml:space="preserve">
+    <value>Grönland</value>
+  </data>
+  <data name="Brazil" xml:space="preserve">
+    <value>Brasilien</value>
+  </data>
+  <data name="Canada" xml:space="preserve">
+    <value>Kanada</value>
+  </data>
+  <data name="EastUSA" xml:space="preserve">
+    <value>Ost-USA</value>
+  </data>
+  <data name="CentralUSA" xml:space="preserve">
+    <value>Zentral-USA</value>
+  </data>
+  <data name="MountainUSA" xml:space="preserve">
+    <value>Berg-USA</value>
+  </data>
+  <data name="PacificUSA" xml:space="preserve">
+    <value>Pazifik-USA</value>
+  </data>
+  <data name="Alaska" xml:space="preserve">
+    <value>Alaska</value>
+  </data>
+  <data name="Honolulu" xml:space="preserve">
+    <value>Honolulu</value>
+  </data>
+  <data name="Midway" xml:space="preserve">
+    <value>Midway</value>
+  </data>
+  <data name="BakerIsland" xml:space="preserve">
+    <value>Baker-Insel</value>
+  </data>
+</root>

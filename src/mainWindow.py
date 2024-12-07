@@ -2,11 +2,12 @@ import datetime
 import enum
 import os
 import random
-from baseWindow import BaseWindow
-from firework import Firework
-from particleText import ParticleText
-from timezones import TimeZones, TimezoneOffset
 import pygame
+from .baseWindow import BaseWindow
+from .firework import Firework
+from .particleText import ParticleText
+from .timezones import TimeZones, TimezoneOffset
+from Resources.Strings_class import Strings
 
 ColorValue = pygame.Color | tuple[int, int, int] | tuple[int, int, int, int] | str
 
@@ -36,7 +37,7 @@ class MainWindow(BaseWindow):
 
     def SetDebug(self, single: bool = False):
         if single:
-            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][0]
+            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][-1]
             self.__timezoneOffset.setCountdownPoint(
                 datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=2, seconds=10))
         else:
@@ -46,6 +47,8 @@ class MainWindow(BaseWindow):
         self.__timezoneOffset = TimezoneOffset(timezone)
 
     def Setup(self):
+        self.currentTimezone = ""
+        self.countdownDone = False
         self.fireworks = []
         self.StartCelebration = 2
         self.EndCelebration = 58
@@ -75,7 +78,7 @@ class MainWindow(BaseWindow):
     def UpdateLogic(self):
         match self.__mode:
             case ProgramMode.PreCountDown:
-                file = "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png"
+                file = "Resources/"+self.currentTimezone+".png"
                 if os.path.exists(file):
                     self.__BgImage = pygame.image.load(file).convert_alpha()
                 self.setFont(fontSize=120)
@@ -87,7 +90,7 @@ class MainWindow(BaseWindow):
                 self.timezoneText.setAlignment("midbottom", generate=False)
                 self.timezoneText.setPosition(self.Width//2, self.Height//2+20, generate=False)
             case ProgramMode.CountDown:
-                file = "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png"
+                file = "Resources/"+self.currentTimezone+".png"
                 if os.path.exists(file):
                     self.__BgImage = pygame.image.load(file).convert_alpha()
                 self.setFont(fontSize=120)
@@ -123,23 +126,25 @@ class MainWindow(BaseWindow):
         self.__BgToDisplay = pygame.transform.scale(self.__BgImage, (self.Width, self.Height))
 
     def Logic(self):
-        if (self.Now.second != self.__lastUpdate):
+        if (self.Now.second != self.__lastUpdate and not self.countdownDone):
             self.__lastUpdate = self.Now.second
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
+            self.currentTimezone = timezone.replace(' ', '_')
             if timezone:
-                if (minutes > self.EndCelebration and hours > 0):
-                    self.timezoneText.updateText(f"Next: {timezone}")
+                if (hours > 0):
+                    self.timezoneText.updateText(Strings.NextTimezone.format(Strings.findString(timezone)))
                 elif (hours == 0):
-                    self.timezoneText.updateText(timezone)
+                    self.timezoneText.updateText(Strings.findString(timezone.replace(" ", "")))
                 else:
-                    self.timezoneText.updateText("Happy New Year!")
+                    self.timezoneText.updateText(Strings.HappyNewYear)
+                    self.countdownDone = True
                 if hours > 0:
-                    self.countDownText.updateText(f"{hours+1} hours")
+                    self.countDownText.updateText(Strings.HoursLeft.format(hours+1))
                     if self.__mode != ProgramMode.TimeZoneDisplay:
                         self.__mode = ProgramMode.TimeZoneDisplay
                         self.UpdateLogic()
                 elif minutes:
-                    self.countDownText.updateText(f"{minutes+1} minutes")
+                    self.countDownText.updateText(Strings.MinutesLeft.format(minutes+1))
                     if minutes < self.StartCelebration and self.__mode == ProgramMode.TimeZoneDisplay:
                         self.__mode = ProgramMode.PreCountDown
                         self.UpdateLogic()
@@ -168,8 +173,9 @@ class MainWindow(BaseWindow):
                 self.fireworks.append(Firework(self.Width, self.Height, self.gravity))
         else:
             self.DisplaySurface.fill((0, 0, 0, 0))
-            self.countDownText.update()
-            self.DrawParticles(self.countDownText.Particles)
+            if (not self.countdownDone):
+                self.countDownText.update()
+                self.DrawParticles(self.countDownText.Particles)
             self.timezoneText.update()
             self.DrawParticles(self.timezoneText.Particles)
         if self.fireworks:

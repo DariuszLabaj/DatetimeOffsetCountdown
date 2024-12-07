@@ -61,7 +61,7 @@ class MainWindow(BaseWindow):
         self.__lastUpdate = self.Now.second
         # Text Display setup
         self.setFont(fontSize=80)
-        self.timezoneText = ParticleText(self.Width, self.Height, 20, 20, self._font, align="topleft")
+        self.timezoneText = ParticleText(self.Width, self.Height, 10, 20, self._font, align="topleft")
         self.countDownText = ParticleText(self.Width, self.Height, self.Width-20,
                                           self.Height-20, self._font, align="bottomright")
         self.__mode = ProgramMode.TimeZoneDisplay
@@ -109,13 +109,13 @@ class MainWindow(BaseWindow):
 
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("topleft", generate=False)
-                self.timezoneText.setPosition(20, 20, generate=False)
+                self.timezoneText.setPosition(10, 20, generate=False)
             case _:
                 self.__BgImage = pygame.image.load("Resources/timezoneBg.jpg").convert_alpha()
                 self.setFont(fontSize=80)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("topleft", generate=False)
-                self.timezoneText.setPosition(20, 20, generate=False)
+                self.timezoneText.setPosition(10, 20, generate=False)
 
                 self.countDownText.setAlignment("bottomright", generate=False)
                 self.countDownText.setFont(self._font, generate=False)

@@ -1,5 +1,6 @@
 import datetime
 import enum
+import os
 import random
 from baseWindow import BaseWindow
 from firework import Firework
@@ -46,7 +47,6 @@ class MainWindow(BaseWindow):
         self.background((0, 0, 0))
         self.__isFullScreen = False
         # Timezone countdown setup
-        # self.__timezoneOffset = TimezoneOffset(TimeZones.Central_Europe)
         self.listOfTimeZones = [x.value - TimeZones.Central_Europe for x in TimeZones]
         self.timeZoneIndex = 0
         self.__setCountdownPoint()
@@ -70,8 +70,9 @@ class MainWindow(BaseWindow):
     def UpdateLogic(self):
         match self.__mode:
             case ProgramMode.PreCountDown:
-                self.__BgImage = pygame.image.load(
-                    "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
+                file = "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png"
+                if os.path.exists(file):
+                    self.__BgImage = pygame.image.load(file).convert_alpha()
                 self.setFont(fontSize=120)
                 self.countDownText.setFont(self._font, generate=False)
                 self.countDownText.setAlignment("midtop", generate=False)
@@ -81,8 +82,9 @@ class MainWindow(BaseWindow):
                 self.timezoneText.setAlignment("midbottom", generate=False)
                 self.timezoneText.setPosition(self.Width//2, self.Height//2+20, generate=False)
             case ProgramMode.CountDown:
-                self.__BgImage = pygame.image.load(
-                    "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png").convert_alpha()
+                file = "Resources/"+self.timezoneText.Text.replace(' ', '_')+".png"
+                if os.path.exists(file):
+                    self.__BgImage = pygame.image.load(file).convert_alpha()
                 self.setFont(fontSize=120)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("midbottom", generate=False)
@@ -105,6 +107,7 @@ class MainWindow(BaseWindow):
                 self.setFont(fontSize=80)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("topleft", generate=False)
+                self.timezoneText.setPosition(20, 20, generate=False)
 
                 self.countDownText.setAlignment("bottomright", generate=False)
                 self.countDownText.setFont(self._font, generate=False)
@@ -119,11 +122,13 @@ class MainWindow(BaseWindow):
             self.__lastUpdate = self.Now.second
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
             if timezone:
-                if (minutes > self.EndCelebration):
+                if (minutes > self.EndCelebration and hours > 0):
                     self.timezoneText.updateText(f"Next: {timezone}")
-                else:
+                elif (hours == 0):
                     self.timezoneText.updateText(timezone)
-                if hours:
+                else:
+                    self.timezoneText.updateText("Happy New Year!")
+                if hours > 0:
                     self.countDownText.updateText(f"{hours+1} hours")
                     if self.__mode != ProgramMode.TimeZoneDisplay:
                         self.__mode = ProgramMode.TimeZoneDisplay
@@ -142,8 +147,11 @@ class MainWindow(BaseWindow):
                         self.UpdateLogic()
                 else:
                     self.countDownText.updateText(f"{seconds}")
-                    if self.__mode != ProgramMode.CountDown:
+                    if self.__mode != ProgramMode.CountDown and seconds > 0:
                         self.__mode = ProgramMode.CountDown
+                        self.UpdateLogic()
+                    if self.__mode == ProgramMode.CountDown and seconds == 0:
+                        self.__mode = ProgramMode.PostCountDown
                         self.UpdateLogic()
 
     def Draw(self):
@@ -168,10 +176,6 @@ class MainWindow(BaseWindow):
 
     def DrawParticles(self, particles: list[ParticleText.Particle], radius: int = 2):
         self.fill((255, 255, 255))
-        # self.stroke((0, 0, 0, 128))
-        # self.strokeWeight(1)
-        # for particle in particles:
-        #     self.circle(particle.X, particle.Y, radius+2)
         self.noStroke()
         for particle in particles:
             self.circle(particle.X, particle.Y, radius)

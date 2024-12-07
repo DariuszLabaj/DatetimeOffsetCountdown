@@ -4,33 +4,33 @@ from typing import Optional
 
 
 class TimeZones(IntEnum):
-    Christmas_Island = 14  #
-    New_Zealand = 13  #
-    Fiji = 12  #
-    Sydney = 11  #
-    Queensland = 10  #
-    Japan = 9  #
-    China = 8  #
-    Indonesia = 7  #
-    Bangladesh = 6  #
-    Pakistan = 5  #
-    Azerbaijan = 4  #
-    Russia = 3  #
-    Greece = 2  #
-    Central_Europe = 1  #
-    United_Kingdom = 0  #
-    Azores = -1  #
-    Greenland = -2  #
-    Brazil = -3  #
+    Christmas_Island = 14
+    New_Zealand = 13
+    Fiji = 12
+    Sydney = 11
+    Queensland = 10
+    Japan = 9
+    China = 8
+    Indonesia = 7
+    Bangladesh = 6
+    Pakistan = 5
+    Azerbaijan = 4
+    Russia = 3
+    Greece = 2
+    Central_Europe = 1
+    United_Kingdom = 0
+    Azores = -1
+    Greenland = -2
+    Brazil = -3
     Canada = -4
     East_USA = -5
-    West_USA = -6
+    Central_USA = -6
     Mountain_USA = -7
     Pacific_USA = -8
     Alaska = -9
-    Honolulu = -10  #
-    Midway = -11  #
-    Baker_Island = -12  #
+    Honolulu = -10
+    Midway = -11
+    Baker_Island = -12
 
 
 class TimezoneOffset:

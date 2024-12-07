@@ -36,7 +36,9 @@ class MainWindow(BaseWindow):
 
     def SetDebug(self, single: bool = False):
         if single:
-            self.__setCountdownPoint()
+            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][0]
+            self.__timezoneOffset.setCountdownPoint(
+                datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=2, seconds=10))
         else:
             self.Debug = True
 

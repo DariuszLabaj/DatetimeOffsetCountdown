@@ -39,8 +39,11 @@ class TimezoneOffset:
             self.__timezone = timezone
         else:
             local_timezone = datetime.datetime.now().astimezone().tzinfo  # Get the system timezone
-            offset_hours = local_timezone.utcoffset(datetime.datetime.now()).seconds // 3600
-            self.__timezone = TimeZones(offset_hours)
+            if local_timezone is None:
+                self.__timezone = TimeZones.Baker_Island
+            else:
+                offset_hours = local_timezone.utcoffset(datetime.datetime.now()).seconds // 3600
+                self.__timezone = TimeZones(offset_hours)
         self.__ctdPtn = datetime.datetime(year=datetime.datetime.now().year+1, month=1, day=1)
         self.__timezonesOffsets = {x.name.replace('_', ' '): datetime.timedelta(
             hours=x-self.__timezone) for x in list(TimeZones)}

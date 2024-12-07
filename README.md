@@ -19,7 +19,7 @@ This project is a Python-based interactive application to celebrate New Year's E
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/new-years-eve-celebration.git
+   git clone https://github.com/DariuszLabaj/DatetimeOffsetCountdown.git
    cd new-years-eve-celebration
     ```
 

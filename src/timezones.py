@@ -34,6 +34,10 @@ class TimeZones(IntEnum):
 
 
 class TimezoneOffset:
+    @property
+    def CountDownPoint(self):
+        return self.__ctdPtn
+    
     def __init__(self, timezone: Optional[TimeZones] = None):
         if timezone:
             self.__timezone = timezone

@@ -37,11 +37,10 @@ class MainWindow(BaseWindow):
         self.UpdateLogic()
 
     def SetDebug(self, single: bool = False):
-        if single:
-            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][16]
-            self.__timezoneOffset.setCountdownPoint(
-                datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
-        else:
+        hours = [x.value - TimeZones.Central_Europe for x in TimeZones][0]
+        self.__timezoneOffset.setCountdownPoint(
+            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
+        if not single:
             self.Debug = True
 
     def SetTimezoneOffset(self, timezone: TimeZones):
@@ -94,10 +93,8 @@ class MainWindow(BaseWindow):
     def __setCountdownPoint(self):
         if not self.Debug:
             return
-        hours = self.listOfTimeZones[self.timeZoneIndex]
-        self.__timezoneOffset.setCountdownPoint(
-            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
-        self.timeZoneIndex += 1
+        self.__timezoneOffset.setCountdownPoint(self.__timezoneOffset.CountDownPoint - datetime.timedelta(seconds=1))
+        self.__lastUpdate = ""
 
     def UpdateLogic(self):
         match self.__mode:
@@ -150,11 +147,15 @@ class MainWindow(BaseWindow):
         self.__BgToDisplay = pygame.transform.scale(self.__BgImage, (self.Width, self.Height))
 
     def Logic(self):
+        if self.__mode == ProgramMode.TimeZoneDisplay or self.__mode == ProgramMode.PreCountDown:
+            self.__setCountdownPoint()
         if (self.Now.second != self.__lastUpdate and not self.countdownDone):
             self.__lastUpdate = self.Now.second
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
             self.currentTimezone = timezone.replace(' ', '_')
             if timezone:
+                if self.Debug:
+                    print(f"{timezone}: {hours:02d}:{minutes:02d}:{seconds:02d}")
                 self.timezoneRectangle = (timezone, hours*3600+minutes*60+seconds)
                 if (hours > 0):
                     self.timezoneText.updateText(Strings.NextTimezone.format(Strings.findString(timezone)))
@@ -177,7 +178,6 @@ class MainWindow(BaseWindow):
                         self.__mode = ProgramMode.PostCountDown
                         self.UpdateLogic()
                     elif self.EndCelebration >= minutes > self.StartCelebration and self.__mode != ProgramMode.TimeZoneDisplay:
-                        self.__setCountdownPoint()
                         self.__mode = ProgramMode.TimeZoneDisplay
                         self.UpdateLogic()
                 else:

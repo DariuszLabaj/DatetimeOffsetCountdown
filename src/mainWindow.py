@@ -1,8 +1,9 @@
 import datetime
-import enum
 import os
 import random
 import pygame
+
+from src.ProgramMode import ProgramMode
 from .baseWindow import BaseWindow
 from .firework import Firework
 from .particleText import ParticleText
@@ -37,14 +38,34 @@ class MainWindow(BaseWindow):
 
     def SetDebug(self, single: bool = False):
         if single:
-            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][-1]
+            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][3]
             self.__timezoneOffset.setCountdownPoint(
-                datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=2, seconds=10))
+                datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
         else:
             self.Debug = True
 
     def SetTimezoneOffset(self, timezone: TimeZones):
         self.__timezoneOffset = TimezoneOffset(timezone)
+
+    def CalculateTimezoneRectanglePositions(self):
+        listOfTimeZones = [x.value for x in TimeZones]
+        self.RectPositions = {x.name.replace(' ', '_'): x.value for x in TimeZones}
+        self.rightSideSlice = (self.Width//2) / (listOfTimeZones[0]*60)
+        self.leftSideSlice = (self.Width//2) / (listOfTimeZones[-1]*60)
+        for key in self.RectPositions.keys():
+            offset = self.RectPositions[key]
+            self.RectPositions[key] = int(60 * offset * (self.rightSideSlice if offset > 0 else self.leftSideSlice))
+
+    def GetTimezoneRect(self, timezone: str, timedelta_m: int):
+        basePosition = self.RectPositions[timezone.replace(' ', '_')]
+        width = 60*(self.rightSideSlice if basePosition > 0 else -self.leftSideSlice)
+        xPosition = self.Width//2 - width//2 + basePosition + (self.rightSideSlice*timedelta_m if basePosition >
+                                                               0 else self.leftSideSlice*timedelta_m)
+        yPosition = 0
+        height = self.Height
+        self.fill((128, 81, 0, 64))
+        self.noStroke()
+        self.rect(xPosition, yPosition, width, height)
 
     def Setup(self):
         self.currentTimezone = ""
@@ -59,6 +80,8 @@ class MainWindow(BaseWindow):
         self.timeZoneIndex = 0
         self.__setCountdownPoint()
         self.__lastUpdate = self.Now.second
+        self.CalculateTimezoneRectanglePositions()
+        self.timezoneRectangle: tuple[str, int] = ("", 0)
         # Text Display setup
         self.setFont(fontSize=80)
         self.timezoneText = ParticleText(self.Width, self.Height, 10, 20, self._font, align="topleft")
@@ -72,7 +95,7 @@ class MainWindow(BaseWindow):
             return
         hours = self.listOfTimeZones[self.timeZoneIndex]
         self.__timezoneOffset.setCountdownPoint(
-            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=2, seconds=10))
+            datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
         self.timeZoneIndex += 1
 
     def UpdateLogic(self):
@@ -131,6 +154,7 @@ class MainWindow(BaseWindow):
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
             self.currentTimezone = timezone.replace(' ', '_')
             if timezone:
+                self.timezoneRectangle = (timezone, hours*60+minutes)
                 if (hours > 0):
                     self.timezoneText.updateText(Strings.NextTimezone.format(Strings.findString(timezone)))
                 elif (hours == 0):
@@ -173,6 +197,8 @@ class MainWindow(BaseWindow):
                 self.fireworks.append(Firework(self.Width, self.Height, self.gravity))
         else:
             self.DisplaySurface.fill((0, 0, 0, 0))
+            if self.__mode == ProgramMode.TimeZoneDisplay and self.timezoneRectangle[0]:
+                self.GetTimezoneRect(*self.timezoneRectangle)
             if (not self.countdownDone):
                 self.countDownText.update()
                 self.DrawParticles(self.countDownText.Particles)
@@ -190,10 +216,3 @@ class MainWindow(BaseWindow):
         self.noStroke()
         for particle in particles:
             self.circle(particle.X, particle.Y, radius)
-
-
-class ProgramMode(enum.Enum):
-    TimeZoneDisplay = enum.auto()
-    PreCountDown = enum.auto()
-    CountDown = enum.auto()
-    PostCountDown = enum.auto()

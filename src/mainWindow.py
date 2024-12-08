@@ -50,16 +50,16 @@ class MainWindow(BaseWindow):
     def CalculateTimezoneRectanglePositions(self):
         listOfTimeZones = [x.value for x in TimeZones]
         self.RectPositions = {x.name.replace(' ', '_'): x.value for x in TimeZones}
-        self.rightSideSlice = (self.Width//2) / (listOfTimeZones[0]*60)
-        self.leftSideSlice = (self.Width//2) / (listOfTimeZones[-1]*60)
+        self.rightSideSlice = (self.Width//2) / (listOfTimeZones[0]*3600)
+        self.leftSideSlice = (self.Width//2) / (listOfTimeZones[-1]*3600)
         for key in self.RectPositions.keys():
             offset = self.RectPositions[key]
             self.RectPositions[key] = int(
-                60 * abs(offset) * (self.rightSideSlice if offset > 0 else self.leftSideSlice))
+                3600 * abs(offset) * (self.rightSideSlice if offset > 0 else self.leftSideSlice))
 
     def GetTimezoneRect(self, timezone: str, timedelta_m: int):
         basePosition = self.RectPositions[timezone.replace(' ', '_')]
-        width = 60*(self.rightSideSlice if basePosition > 0 else -self.leftSideSlice)
+        width = 3600*(self.rightSideSlice if basePosition > 0 else -self.leftSideSlice)
         xPosition = self.Width//2 - width//2 + basePosition + (self.rightSideSlice*timedelta_m if basePosition >
                                                                0 else self.leftSideSlice*timedelta_m)
         yPosition = 0
@@ -155,7 +155,7 @@ class MainWindow(BaseWindow):
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
             self.currentTimezone = timezone.replace(' ', '_')
             if timezone:
-                self.timezoneRectangle = (timezone, hours*60+minutes)
+                self.timezoneRectangle = (timezone, hours*3600+minutes*60+seconds)
                 if (hours > 0):
                     self.timezoneText.updateText(Strings.NextTimezone.format(Strings.findString(timezone)))
                 elif (hours == 0):

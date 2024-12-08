@@ -65,7 +65,10 @@ class BaseWindow(ABC):
         self._flags = pygame.DOUBLEBUF | pygame.HWSURFACE | flags
         self._width = width
         self._height = height
-        self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)
+        if self._flags & pygame.FULLSCREEN == pygame.FULLSCREEN:
+            self._backgroundSurface = pygame.display.set_mode((0, 0), self._flags)
+        else:
+            self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)
         self._displaySurface = pygame.Surface(self._backgroundSurface.get_rect().size, pygame.SRCALPHA)
         self._fps = fps if fps is not None else 60
         self._FramePerSec = pygame.time.Clock()

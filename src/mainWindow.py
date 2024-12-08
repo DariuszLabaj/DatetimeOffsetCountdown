@@ -31,7 +31,7 @@ class MainWindow(BaseWindow):
         self.__isFullScreen = not self.__isFullScreen
         if self.__isFullScreen:
             self._backgroundSurface = pygame.display.set_mode(
-                (self._width, self._height), self._flags | pygame.FULLSCREEN)
+                (0, 0), self._flags | pygame.FULLSCREEN)
         else:
             self._backgroundSurface = pygame.display.set_mode((self._width, self._height), self._flags)
         self.UpdateLogic()
@@ -74,7 +74,8 @@ class MainWindow(BaseWindow):
         self.StartCelebration = 2
         self.EndCelebration = 58
         self.background((0, 0, 0))
-        self.__isFullScreen = False
+        self.__isFullScreen = self._flags & pygame.FULLSCREEN == pygame.FULLSCREEN
+        print(f"{self.__isFullScreen = }")
         # Timezone countdown setup
         self.listOfTimeZones = [x.value - TimeZones.Central_Europe for x in TimeZones]
         self.timeZoneIndex = 0

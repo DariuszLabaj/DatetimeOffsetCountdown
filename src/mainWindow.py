@@ -135,7 +135,7 @@ class MainWindow(BaseWindow):
                 self.timezoneText.setAlignment("topleft", generate=False)
                 self.timezoneText.setPosition(10, 20, generate=False)
             case _:
-                self.__BgImage = pygame.image.load("Resources/timezoneBg.jpg").convert_alpha()
+                self.__BgImage = pygame.image.load("Resources/timezoneBg.png").convert_alpha()
                 self.setFont(fontSize=80)
                 self.timezoneText.setFont(self._font, generate=False)
                 self.timezoneText.setAlignment("topleft", generate=False)

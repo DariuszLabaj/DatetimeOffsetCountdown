@@ -38,7 +38,7 @@ class MainWindow(BaseWindow):
 
     def SetDebug(self, single: bool = False):
         if single:
-            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][3]
+            hours = [x.value - TimeZones.Central_Europe for x in TimeZones][16]
             self.__timezoneOffset.setCountdownPoint(
                 datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
         else:
@@ -54,7 +54,8 @@ class MainWindow(BaseWindow):
         self.leftSideSlice = (self.Width//2) / (listOfTimeZones[-1]*60)
         for key in self.RectPositions.keys():
             offset = self.RectPositions[key]
-            self.RectPositions[key] = int(60 * offset * (self.rightSideSlice if offset > 0 else self.leftSideSlice))
+            self.RectPositions[key] = int(
+                60 * abs(offset) * (self.rightSideSlice if offset > 0 else self.leftSideSlice))
 
     def GetTimezoneRect(self, timezone: str, timedelta_m: int):
         basePosition = self.RectPositions[timezone.replace(' ', '_')]

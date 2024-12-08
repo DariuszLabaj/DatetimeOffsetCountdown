@@ -1,3 +1,2 @@
-numpy==2.1.3
-py_resource_manager @ git+https://github.com/DariuszLabaj/PythonResourceManager.git@3bb5a1e550338fc0665681a1ec5256c2da3b7e9a
+py_resource_manager @ git+https://github.com/DariuszLabaj/PythonResourceManager.git
 pygame==2.6.1

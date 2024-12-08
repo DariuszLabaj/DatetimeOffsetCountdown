@@ -11,7 +11,7 @@ This project is a Python-based interactive application to celebrate New Year's E
 
 ## Prerequisites
 
-- Python 3.9 or later
+- Python 3.12 or later
 - Pygame (`pip install pygame`)
 
 ## Installation

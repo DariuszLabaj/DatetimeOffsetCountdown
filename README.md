@@ -27,6 +27,7 @@ This project is a Python-based interactive application to celebrate New Year's E
 
     ```bash
     pip install pygame
+    pip install git+https://github.com/DariuszLabaj/PythonResourceManager.git
     ```
 
 3. Place the required resources in the Resources folder:

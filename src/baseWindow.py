@@ -144,11 +144,11 @@ class BaseWindow(ABC):
                     self._keyName = joystickButton.name(event.button)
                     self.keyPressed()
                 case pygame.JOYAXISMOTION:
-                    ...
+                    self.axisMoved(event.axis, event.value)
                 case pygame.JOYBALLMOTION:
-                    ...
+                    self.ballMoved(event.ball, event.value)
                 case pygame.JOYHATMOTION:
-                    ...
+                    self.hatMoved(event.hat, event.value)
 
     def Start(self):
         pygame.init()

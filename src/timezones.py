@@ -31,12 +31,22 @@ class TimeZones(IntEnum):
     Honolulu = -10
     Midway = -11
     Baker_Island = -12
+    
+    @classmethod
+    def get(cls, name: str, default: Optional[int]=None):
+        enum_value = {member.name: member.value for member in cls}.get(name, default)
+        if enum_value is None: return None
+        return TimeZones(enum_value)
 
 
 class TimezoneOffset:
     @property
     def CountDownPoint(self):
         return self.__ctdPtn
+    
+    @property
+    def Timezone(self):
+        return self.__timezone
     
     def __init__(self, timezone: Optional[TimeZones] = None):
         if timezone:

@@ -37,7 +37,7 @@ class MainWindow(BaseWindow):
         self.UpdateLogic()
 
     def SetDebug(self, single: bool = False):
-        hours = [x.value - TimeZones.Central_Europe for x in TimeZones][0]
+        hours = [x.value - self.__timezoneOffset.Timezone for x in TimeZones][0]
         self.__timezoneOffset.setCountdownPoint(
             datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
         if not single:
@@ -75,9 +75,8 @@ class MainWindow(BaseWindow):
         self.EndCelebration = 58
         self.background((0, 0, 0))
         self.__isFullScreen = self._flags & pygame.FULLSCREEN == pygame.FULLSCREEN
-        print(f"{self.__isFullScreen = }")
         # Timezone countdown setup
-        self.listOfTimeZones = [x.value - TimeZones.Central_Europe for x in TimeZones]
+        self.listOfTimeZones = [x.value - self.__timezoneOffset.Timezone for x in TimeZones]
         self.timeZoneIndex = 0
         self.__setCountdownPoint()
         self.__lastUpdate = self.Now.second
@@ -155,8 +154,6 @@ class MainWindow(BaseWindow):
             timezone, hours, minutes, seconds = self.__timezoneOffset.getLowestTimedelta()
             self.currentTimezone = timezone.replace(' ', '_')
             if timezone:
-                if self.Debug:
-                    print(f"{timezone}: {hours:02d}:{minutes:02d}:{seconds:02d}")
                 self.timezoneRectangle = (timezone, hours*3600+minutes*60+seconds)
                 if (hours > 0):
                     self.timezoneText.updateText(Strings.NextTimezone.format(Strings.findString(timezone)))

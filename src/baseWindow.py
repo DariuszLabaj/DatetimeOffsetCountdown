@@ -10,6 +10,7 @@ class BaseWindow(ABC):
     _stroke: Optional[ColorValue] = None
     _strokeWeight: int = 0
     _keyCode: int
+    _keyName: str
     _fps: int
     _height: int
     _width: int
@@ -42,6 +43,10 @@ class BaseWindow(ABC):
     @property
     def keyCode(self) -> int:
         return self._keyCode
+
+    @property
+    def keyName(self) -> str:
+        return self._keyName
 
     @property
     def MousePosition(self):
@@ -88,9 +93,11 @@ class BaseWindow(ABC):
                     self._running = False
                 case pygame.KEYDOWN:
                     self._keyCode = event.key
+                    self._keyName = pygame.key.name(event.key)
                     self.keyPressed()
                 case pygame.KEYUP:
                     self._keyCode = event.key
+                    self._keyName = pygame.key.name(event.key)
                     self.keyReleased()
                 case pygame.MOUSEBUTTONDOWN:
                     self._mousePosition = pygame.mouse.get_pos()

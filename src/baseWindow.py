@@ -15,11 +15,41 @@ class joystickButton:
         6: "Menu",
         7: "View",
         9: "L3",
-        10: "L4"
+        10: "R3"
     }
     @classmethod
     def name(cls, button: int):
         return cls.xBoxLayout.get(button, "Unknown")
+
+class joystickHat:
+    xBoxLayout: dict[tuple[int, int], str] = {
+        (0, 0): "None",
+        (-1, 0): "Left",
+        (1, 0): "Right",
+        (0, 1): "Up",
+        (0, -1): "Down",
+        (-1, 1): "Up/Left",
+        (-1, -1): "Down/Left",
+        (1, 1): "Up/Right",
+        (1, -1): "Down/Right",
+    }
+    @classmethod
+    def name(cls, value: tuple[int, int]):
+        return cls.xBoxLayout.get(value, "Unknown")
+
+class joystickAxis:
+    xBoxLayout: dict[int, str] = {
+        0: "Left Stick Horizontal",
+        1: "Left Stick Vertical",
+        2: "Left Trigger",
+        3: "Right Stick Horizontal",
+        4: "Right Strick Vertical",
+        5: "Right Trigger"
+        
+    }
+    @classmethod
+    def name(cls, axis: int):
+        return cls.xBoxLayout.get(axis, "Unknown")
 
 class BaseWindow(ABC):
     _fill: Optional[ColorValue] = None
@@ -145,10 +175,12 @@ class BaseWindow(ABC):
                     self.keyPressed()
                 case pygame.JOYAXISMOTION:
                     if not(-0.05 < event.value < 0.05):
+                        self._keyName = joystickAxis.name(event.axis)
                         self.axisMoved(event.axis, event.value)
                 case pygame.JOYBALLMOTION:
                     self.ballMoved(event.ball, event.value)
                 case pygame.JOYHATMOTION:
+                    self._keyName = joystickHat.name(event.value)
                     self.hatMoved(event.hat, event.value)
 
     def Start(self):
@@ -181,7 +213,7 @@ class BaseWindow(ABC):
     def ballMoved(self, ball: int, value: float):
         pass
     
-    def hatMoved(self, hat: int, value: float):
+    def hatMoved(self, hat: int, value: tuple[int, int]):
         pass
 
     @abstractmethod

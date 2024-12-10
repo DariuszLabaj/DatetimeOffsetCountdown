@@ -34,13 +34,13 @@ class MainWindow(BaseWindow):
         self.debugInfo = f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})"
         
     def axisMoved(self, axis: int, value: float):
-        self.debugInfo = f"Axis Moved: \"{axis}\" (Value: {value})"
+        self.debugInfo = f"Axis Moved: \"{self.keyName}\" (Value: {value})"
     
     def ballMoved(self, ball: int, value: float):
-        self.debugInfo = f"Axis Moved: \"{ball}\" (Value: {value})"
+        self.debugInfo = f"Ball Moved: \"{ball}\" (Value: {value})"
     
-    def hatMoved(self, hat: int, value: float):
-        self.debugInfo = f"Axis Moved: \"{hat}\" (Value: {value})"
+    def hatMoved(self, hat: int, value: tuple[int, int]):
+        self.debugInfo = f"Hat Moved: \"{self.keyName}\""
 
     def ToggleFullscreen(self):
         self.__isFullScreen = not self.__isFullScreen

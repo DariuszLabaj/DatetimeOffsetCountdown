@@ -210,7 +210,8 @@ class MainWindow(BaseWindow):
                 if self.fireworks[i].offScreen:
                     self.fireworks.pop(i)
         if self.Debug:
-            self.text(f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})", self.Width//2, self.Height//2, align="center")
+            self.setFont(fontSize=60)
+            self.text(f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})", self.Width//2, self.Height//2+100, align="center")
 
     def DrawParticles(self, particles: list[ParticleText.Particle], radius: int = 2):
         self.fill((255, 255, 255))

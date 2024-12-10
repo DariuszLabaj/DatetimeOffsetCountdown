@@ -9,8 +9,8 @@ class BaseWindow(ABC):
     _fill: Optional[ColorValue] = None
     _stroke: Optional[ColorValue] = None
     _strokeWeight: int = 0
-    _keyCode: int
-    _keyName: str
+    _keyCode: int = -1
+    _keyName: str = ""
     _fps: int
     _height: int
     _width: int

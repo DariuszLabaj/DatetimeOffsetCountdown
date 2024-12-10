@@ -144,7 +144,8 @@ class BaseWindow(ABC):
                     self._keyName = joystickButton.name(event.button)
                     self.keyPressed()
                 case pygame.JOYAXISMOTION:
-                    self.axisMoved(event.axis, event.value)
+                    if not(-0.05 < event.value < 0.05):
+                        self.axisMoved(event.axis, event.value)
                 case pygame.JOYBALLMOTION:
                     self.ballMoved(event.ball, event.value)
                 case pygame.JOYHATMOTION:

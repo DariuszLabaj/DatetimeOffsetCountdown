@@ -26,6 +26,8 @@ class MainWindow(BaseWindow):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LALT] and keys[pygame.K_RETURN]:
             self.ToggleFullscreen()
+        if self.keyName == "Joystick Button" and self.keyCode == 6:
+            self._running = False
 
     def ToggleFullscreen(self):
         self.__isFullScreen = not self.__isFullScreen

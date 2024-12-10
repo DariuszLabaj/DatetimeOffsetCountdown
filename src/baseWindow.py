@@ -4,6 +4,22 @@ import pygame
 
 ColorValue = pygame.Color | tuple[int, int, int] | tuple[int, int, int, int] | str
 
+class joystickButton:
+    xBoxLayout: dict[int, str] = {
+        0: "A",
+        1: "B",
+        2: "X",
+        3: "Y",
+        4: "L1",
+        5: "R1",
+        6: "Menu",
+        7: "View",
+        9: "L3",
+        10: "L4"
+    }
+    @classmethod
+    def name(cls, button: int):
+        return cls.xBoxLayout.get(button, "Unknown")
 
 class BaseWindow(ABC):
     _fill: Optional[ColorValue] = None
@@ -121,12 +137,18 @@ class BaseWindow(ABC):
                     self.mouseReleased()
                 case pygame.JOYBUTTONDOWN:
                     self._keyCode = event.button
-                    self._keyName = "Joystick Button"
+                    self._keyName = joystickButton.name(event.button)
                     self.keyPressed()
                 case pygame.JOYBUTTONUP:
                     self._keyCode = event.button
-                    self._keyName = "Joystick Button"
+                    self._keyName = joystickButton.name(event.button)
                     self.keyPressed()
+                case pygame.JOYAXISMOTION:
+                    ...
+                case pygame.JOYBALLMOTION:
+                    ...
+                case pygame.JOYHATMOTION:
+                    ...
 
     def Start(self):
         pygame.init()
@@ -150,6 +172,15 @@ class BaseWindow(ABC):
         pass
 
     def mouseReleased(self):
+        pass
+
+    def axisMoved(self, axis: int, value: float):
+        pass
+    
+    def ballMoved(self, ball: int, value: float):
+        pass
+    
+    def hatMoved(self, hat: int, value: float):
         pass
 
     @abstractmethod

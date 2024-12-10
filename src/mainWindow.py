@@ -17,6 +17,9 @@ class MainWindow(BaseWindow):
     fireworks: list[Firework]
     gravity = pygame.Vector2(0, 0.2)
     __timezoneOffset = TimezoneOffset()
+    debugInfo: str = ""
+    Verbose: bool = False
+    Debug: bool = False
 
     @property
     def Now(self):
@@ -26,8 +29,18 @@ class MainWindow(BaseWindow):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LALT] and keys[pygame.K_RETURN]:
             self.ToggleFullscreen()
-        if self.keyName == "Joystick Button" and self.keyCode == 6:
+        if self.keyName == "Menu" and self.keyCode == 6:
             self._running = False
+        self.debugInfo = f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})"
+        
+    def axisMoved(self, axis: int, value: float):
+        self.debugInfo = f"Axis Moved: \"{axis}\" (Value: {value})"
+    
+    def ballMoved(self, ball: int, value: float):
+        self.debugInfo = f"Axis Moved: \"{ball}\" (Value: {value})"
+    
+    def hatMoved(self, hat: int, value: float):
+        self.debugInfo = f"Axis Moved: \"{hat}\" (Value: {value})"
 
     def ToggleFullscreen(self):
         self.__isFullScreen = not self.__isFullScreen
@@ -44,6 +57,9 @@ class MainWindow(BaseWindow):
             datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=5, seconds=10))
         if not single:
             self.Debug = True
+
+    def SetVerbose(self):
+        self.Verbose = True
 
     def SetTimezoneOffset(self, timezone: TimeZones):
         self.__timezoneOffset = TimezoneOffset(timezone)
@@ -211,9 +227,9 @@ class MainWindow(BaseWindow):
                 self.fireworks[i].show(self.DisplaySurface)
                 if self.fireworks[i].offScreen:
                     self.fireworks.pop(i)
-        if self.Debug:
+        if self.Debug and self.Verbose:
             self.setFont(fontSize=60)
-            self.text(f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})", self.Width//2, self.Height//2+100, align="center")
+            self.text(self.debugInfo, self.Width//2, self.Height//2+100, align="center")
 
     def DrawParticles(self, particles: list[ParticleText.Particle], radius: int = 2):
         self.fill((255, 255, 255))

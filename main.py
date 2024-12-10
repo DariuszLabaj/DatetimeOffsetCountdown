@@ -46,6 +46,8 @@ if __name__ == "__main__":
         mainViewModel = MainWindow(1024, 768)
     else:
         mainViewModel = MainWindow(1024, 768, flags=pygame.SRCALPHA | pygame.FULLSCREEN)
+    if args.verbose:
+        mainViewModel.SetVerbose()
     if timezone is not None:
         if args.verbose: print(f"Countdown for timezone: {timezone}")
         mainViewModel.SetTimezoneOffset(timezone)  # Set timezone manually if automatic one does not work for some reason

@@ -34,10 +34,10 @@ class MainWindow(BaseWindow):
         self.debugInfo = f"Key Pressed: \"{self.keyName}\" (KeyCode: {self.keyCode})"
         
     def axisMoved(self, axis: int, value: float):
-        self.debugInfo = f"Axis Moved: \"{self.keyName}\" (Value: {value})"
+        self.debugInfo = f"Axis Moved: \"{self.keyName}\" (Value: {value:.02f})"
     
     def ballMoved(self, ball: int, value: float):
-        self.debugInfo = f"Ball Moved: \"{ball}\" (Value: {value})"
+        self.debugInfo = f"Ball Moved: \"{ball}\" (Value: {value:.02f})"
     
     def hatMoved(self, hat: int, value: tuple[int, int]):
         self.debugInfo = f"Hat Moved: \"{self.keyName}\""

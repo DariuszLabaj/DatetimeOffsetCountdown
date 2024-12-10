@@ -65,6 +65,10 @@ class BaseWindow(ABC):
     def _translationIndex(self) -> int:
         return len(self._translationMatrix)-1
 
+    @property
+    def Joystick(self):
+        return self._joystick
+
     def __init__(self, width: int = 800, height: int = 600, caption: Optional[str] = None, fps: Optional[int] = None, flags: int = pygame.SRCALPHA):
         self._running = False
         self._flags = pygame.DOUBLEBUF | pygame.HWSURFACE | flags
@@ -81,6 +85,16 @@ class BaseWindow(ABC):
         pygame.font.init()
         if caption:
             pygame.display.set_caption(caption)
+        
+        pygame.joystick.init()
+        self._joystick : pygame.joystick.JoystickType | None = None
+        self._joysticks: list[pygame.joystick.JoystickType] = []
+        if pygame.joystick.get_count() > 0:
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                joystick.init()
+                self._joysticks.append(joystick)
+            self._joystick = self._joysticks[0]  # Use the first joystick by default
 
     def Stop(self):
         self._running = False
@@ -105,6 +119,14 @@ class BaseWindow(ABC):
                 case pygame.MOUSEBUTTONUP:
                     self._mousePosition = pygame.mouse.get_pos()
                     self.mouseReleased()
+                case pygame.JOYBUTTONDOWN:
+                    self._keyCode = event.button
+                    self._keyName = "Joystick Button"
+                    self.keyPressed()
+                case pygame.JOYBUTTONUP:
+                    self._keyCode = event.button
+                    self._keyName = "Joystick Button"
+                    self.keyPressed()
 
     def Start(self):
         pygame.init()

@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class TimeZones(IntEnum):
-    Christmas_Island = 14
+    # Christmas_Island = 14
     New_Zealand = 13
     Fiji = 12
     Sydney = 11
@@ -30,7 +30,7 @@ class TimeZones(IntEnum):
     Alaska = -9
     Honolulu = -10
     Midway = -11
-    Baker_Island = -12
+    # Baker_Island = -12
     
     @classmethod
     def get(cls, name: str, default: Optional[int]=None):
@@ -54,7 +54,7 @@ class TimezoneOffset:
         else:
             local_timezone = datetime.datetime.now().astimezone().tzinfo  # Get the system timezone
             if local_timezone is None:
-                self.__timezone = TimeZones.Baker_Island
+                self.__timezone = TimeZones.Midway
             else:
                 offsetTime = local_timezone.utcoffset(datetime.datetime.now())
                 offset_hours = offsetTime.seconds // 3600 if offsetTime is not None else 0
